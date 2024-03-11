@@ -1,7 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TasksModule } from './tasks/tasks.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TasksModule],
+  imports: [
+    TasksModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 8000,
+      username: 'nest-ems',
+      password: 'emspassword',
+      database: 'ems-management',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+  ],
 })
 export class AppModule {}
