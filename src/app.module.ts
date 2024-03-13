@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
@@ -6,13 +7,16 @@ import { TasksModule } from './tasks/tasks.module';
 @Module({
   imports: [
     TasksModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 8000,
-      username: 'nest-ems',
-      password: 'emspassword',
-      database: 'ems-management',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT!),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
